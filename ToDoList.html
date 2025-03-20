@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>To Do list</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .container {
+            background-color: white;
+            padding: 50px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 400px;
+        }
+
+        h1 {
+            text-align: center;
+            font-size: 24px;
+            color: #333;
+        }
+
+        label {
+            display: block;
+            font-size: 16px;
+            margin-bottom: 8px;
+            color: #333;
+        }
+
+        .input-container {
+            display: flex;
+            gap: 10px; /* Space between the input field and button */
+            margin-bottom: 20px;
+        }
+
+        #input {
+            width: 100%;
+            padding: 10px;
+            font-size: 16px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+
+        button {
+            padding: 10px 15px;
+            font-size: 16px;
+            border: none;
+            background-color: #817c77;
+            color: white;
+            cursor: pointer;
+            border-radius: 4px;
+            transition: background-color 0.3s;
+        }
+
+        button:hover {
+            background-color: #75642c;
+        }
+
+        ol {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        li {
+            background-color: #f9f9f9;
+            margin: 8px 0;
+            padding: 10px;
+            border-radius: 4px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        li button {
+            margin-left: 10px;
+        }
+
+        input[type="text"] {
+            width: 70%;
+            padding: 8px;
+            font-size: 16px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>To Do List</h1>
+        <label for="input">Task</label>
+        <div class="input-container">
+            <input id="input" type="text">
+            <button onclick="addTask()">Add</button>
+        </div>
+
+        <ol id="list">
+            <!-- Tasks will be listed here -->
+        </ol>
+    </div>
+
+    <script>
+        const input = document.getElementById('input');
+        const list = document.getElementById('list');
+
+        function addTask() {
+            const newLi = document.createElement('li');
+            newLi.innerHTML = `
+                ${input.value} 
+                <button onclick="editTask(event)">Edit</button>
+                <button onclick="deleteTask(event)">Delete</button>
+            `;
+            list.appendChild(newLi);
+            input.value = '';
+        }
+
+        function editTask(event) {
+            const li = event.target.parentNode;
+            const taskText = li.firstChild.textContent.trim();
+            
+            // Replace the task text with an input field for editing
+            li.innerHTML = `
+                <input type="text" value="${taskText}">
+                <button onclick="saveTask(event)">Save</button>
+                <button onclick="deleteTask(event)">Delete</button>
+            `;
+        }
+
+        function saveTask(event) {
+            const li = event.target.parentNode;
+            const updatedText = li.querySelector('input').value;
+
+            // Update task with the new text
+            li.innerHTML = `
+                ${updatedText}
+                <button onclick="editTask(event)">Edit</button>
+                <button onclick="deleteTask(event)">Delete</button>
+            `;
+        }
+
+        function deleteTask(event) {
+            const li = event.target.parentNode;
+
+            // Ask for confirmation before deleting
+            const confirmDelete = confirm("Are you sure you want to delete this task?");
+            if (confirmDelete) {
+                li.remove();
+            }
+        }
+    </script>
+</body>
+</html>
